@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VoyageVote - Juin 2026</title>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&f[]=cabinet-grotesk@700,800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f7f6f2;--surface:#f9f8f5;--surface2:#fbfbf9;
+  --offset:#f0ede8;--dynamic:#e6e4df;
+  --border:#d4d1ca;--divider:#dcd9d5;
+  --text:#28251d;--muted:#7a7974;--faint:#bab9b4;
+  --primary:#01696f;--primary-h:#0c4e54;--primary-hl:#cedcd8;
+  --gold:#c08800;--gold-hl:#f0e4b8;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.07);
+  --shadow-md:0 4px 14px rgba(0,0,0,.09);
+  --shadow-lg:0 14px 36px rgba(0,0,0,.13);
+  --r-sm:.375rem;--r-md:.5rem;--r-lg:.75rem;--r-xl:1rem;--r-full:9999px;
+  --s1:.25rem;--s2:.5rem;--s3:.75rem;--s4:1rem;--s5:1.25rem;--s6:1.5rem;--s8:2rem;--s10:2.5rem;--s12:3rem;
+  --font-d:'Cabinet Grotesk',sans-serif;--font-b:'Satoshi',sans-serif;
+  --tr:180ms cubic-bezier(.16,1,.3,1);
+}
+[data-theme="dark"]{
+  --bg:#171614;--surface:#1c1b19;--surface2:#201f1d;
+  --offset:#1d1c1a;--dynamic:#2d2c2a;
+  --border:#393836;--divider:#262523;
+  --text:#cdccca;--muted:#797876;--faint:#5a5957;
+  --primary:#4f98a3;--primary-h:#227f8b;--primary-hl:#2a3b3b;
+  --gold:#e8af34;--gold-hl:#4d4332;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.25);
+  --shadow-md:0 4px 14px rgba(0,0,0,.35);
+  --shadow-lg:0 14px 36px rgba(0,0,0,.5);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{min-height:100dvh;font-family:var(--font-b);font-size:clamp(1rem,.95rem + .25vw,1.125rem);color:var(--text);background:var(--bg);transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;background:none;border:none;font:inherit;color:inherit}
+img{display:block;max-width:100%;height:auto}
+
+header{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);box-shadow:var(--shadow-sm);padding:var(--s3) var(--s6);display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:var(--s2)}
+.logo svg{color:var(--primary);flex-shrink:0}
+.logo-name{font-family:var(--font-d);font-size:clamp(1.125rem,1rem + .75vw,1.5rem);font-weight:800}
+.logo-sub{font-size:.72rem;color:var(--muted)}
+.theme-btn{width:36px;height:36px;border-radius:var(--r-full);display:flex;align-items:center;justify-content:center;background:var(--offset);color:var(--muted);transition:background var(--tr),color var(--tr)}
+.theme-btn:hover{background:var(--dynamic);color:var(--text)}
+
+main{max-width:700px;margin:0 auto;padding:var(--s8) var(--s4)}
+
+.step{display:none}
+.step.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.step.active{animation:fadeUp .3s cubic-bezier(.16,1,.3,1) both}
+
+.big-title{font-family:var(--font-d);font-size:clamp(2rem,1.2rem + 2.5vw,3.5rem);font-weight:800;line-height:1.1;margin-bottom:var(--s2)}
+.sub{color:var(--muted);font-size:clamp(.875rem,.8rem + .35vw,1rem);margin-bottom:var(--s8)}
+.form-group{margin-bottom:var(--s5)}
+.form-label{display:block;font-size:.9rem;font-weight:500;margin-bottom:var(--s2)}
+.form-input{width:100%;padding:var(--s3) var(--s4);background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-lg);font-size:1rem;color:var(--text);outline:none;transition:border-color var(--tr),box-shadow var(--tr)}
+.form-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px color-mix(in srgb,var(--primary) 15%,transparent)}
+.btn-primary{display:inline-flex;align-items:center;gap:var(--s2);background:var(--primary);color:#fff;padding:var(--s3) var(--s6);border-radius:var(--r-full);font-size:.9rem;font-weight:700;letter-spacing:.01em;box-shadow:var(--shadow-sm);transition:background var(--tr),transform var(--tr),box-shadow var(--tr)}
+.btn-primary:hover{background:var(--primary-h);box-shadow:var(--shadow-md);transform:translateY(-1px)}
+.btn-primary:active{transform:translateY(0)}
+.btn-sec{display:inline-flex;align-items:center;gap:var(--s2);background:var(--offset);color:var(--text);padding:var(--s2) var(--s4);border-radius:var(--r-full);font-size:.9rem;font-weight:600;border:1px solid var(--border);box-shadow:var(--shadow-sm);transition:background var(--tr),box-shadow var(--tr)}
+.btn-sec:hover{background:var(--dynamic);box-shadow:var(--shadow-md)}
+
+.prog-wrap{margin-bottom:var(--s8)}
+.prog-labels{display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);margin-bottom:var(--s2)}
+.prog-track{height:6px;background:var(--dynamic);border-radius:var(--r-full);overflow:hidden}
+.prog-fill{height:100%;background:var(--primary);border-radius:var(--r-full);transition:width .5s cubic-bezier(.16,1,.3,1)}
+
+.round-hd{text-align:center;margin-bottom:var(--s6)}
+.tag{display:inline-block;padding:2px var(--s3);border-radius:var(--r-full);font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--primary-hl);color:var(--primary);margin-bottom:var(--s3)}
+.round-title{font-family:var(--font-d);font-size:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);font-weight:800;line-height:1.1}
+.round-sub{color:var(--muted);font-size:.9rem;margin-top:var(--s2)}
+
+/* DUEL CARDS WITH PHOTO */
+.duel-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
+@media(max-width:500px){.duel-grid{grid-template-columns:1fr}}
+.dest-card{background:var(--surface);border:2.5px solid var(--border);border-radius:var(--r-xl);cursor:pointer;text-align:center;transition:border-color var(--tr),transform var(--tr),box-shadow var(--tr);position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent}
+.dest-card:hover{border-color:var(--primary);transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.dest-card:active{transform:translateY(-1px)}
+.dest-card.chosen{border-color:var(--primary);transform:scale(1.03);box-shadow:var(--shadow-lg)}
+.dest-card.rejected{opacity:.35;transform:scale(.96);pointer-events:none}
+.dest-photo{width:100%;height:160px;object-fit:cover;display:block;background:var(--dynamic)}
+.dest-body{padding:var(--s4) var(--s4) var(--s5)}
+.dest-name{font-family:var(--font-d);font-weight:800;font-size:clamp(1.125rem,1rem + .75vw,1.5rem);margin-bottom:2px}
+.dest-country{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.dest-price{display:inline-block;margin-top:var(--s2);background:var(--gold-hl);color:var(--gold);font-size:.72rem;font-weight:700;padding:2px var(--s2);border-radius:var(--r-full)}
+.checkmark{position:absolute;top:var(--s3);right:var(--s3);width:28px;height:28px;background:var(--primary);border-radius:var(--r-full);display:none;align-items:center;justify-content:center;color:#fff;z-index:2}
+.dest-card.chosen .checkmark{display:flex}
+.chosen-overlay{position:absolute;inset:0;background:color-mix(in srgb,var(--primary) 12%,transparent);pointer-events:none;opacity:0;transition:opacity var(--tr)}
+.dest-card.chosen .chosen-overlay{opacity:1}
+
+/* RESULTS */
+.podium{display:flex;flex-direction:column;gap:var(--s3);margin-top:var(--s6)}
+.podium-item{display:flex;align-items:center;gap:var(--s4);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;transition:box-shadow var(--tr)}
+.podium-item:hover{box-shadow:var(--shadow-md)}
+.podium-thumb{width:72px;height:72px;object-fit:cover;flex-shrink:0}
+.podium-rank{font-family:var(--font-d);font-weight:800;font-size:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);width:48px;text-align:center;flex-shrink:0}
+.r1{color:var(--gold)}.r2{color:var(--muted)}.r3{color:#c07030}
+.podium-info{flex:1;min-width:0;padding:var(--s3) 0}
+.podium-name{font-family:var(--font-d);font-weight:700;font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.podium-country{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+.podium-score{font-size:.72rem;font-weight:700;color:var(--primary);background:var(--primary-hl);padding:2px var(--s2);border-radius:var(--r-full);flex-shrink:0;margin-right:var(--s4)}
+
+.share-box{margin-top:var(--s8);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s6)}
+.share-title{font-family:var(--font-d);font-weight:700;font-size:clamp(1.125rem,1rem + .75vw,1.5rem);margin-bottom:var(--s2)}
+.share-sub{color:var(--muted);font-size:.9rem;margin-bottom:var(--s4)}
+.share-actions{display:flex;gap:var(--s3);flex-wrap:wrap}
+
+.toast{position:fixed;bottom:var(--s6);left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:var(--bg);padding:var(--s3) var(--s5);border-radius:var(--r-full);font-size:.9rem;font-weight:500;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;z-index:999;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:500}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-label="VoyageVote">
+      <circle cx="14" cy="14" r="13" stroke="currentColor" stroke-width="2"/>
+      <path d="M14 5C14 5 8 11 8 16C8 19.3 10.7 22 14 22C17.3 22 20 19.3 20 16C20 11 14 5 14 5Z" fill="currentColor" opacity="0.2"/>
+      <path d="M14 5C14 5 8 11 8 16C8 19.3 10.7 22 14 22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="14" cy="15.5" r="2.5" fill="currentColor"/>
+    </svg>
+    <div>
+      <div class="logo-name">VoyageVote</div>
+      <div class="logo-sub">Juin 2026 &middot; Paris ou Nantes</div>
+    </div>
+  </div>
+  <button class="theme-btn" id="theme-btn" aria-label="Changer le theme">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+  </button>
+</header>
+
+<main>
+  <div class="step active" id="step-name">
+    <div class="big-title">Choisis ta destination</div>
+    <div class="sub">Un tournoi de duels pour trouver ou partir en juin avec tes potes. Entre ton prenom pour commencer.</div>
+    <div class="form-group">
+      <label class="form-label" for="name-input">Ton prenom</label>
+      <input class="form-input" id="name-input" type="text" placeholder="Ex : Sofiane" maxlength="30" autocomplete="given-name">
+    </div>
+    <button class="btn-primary" id="start-btn" type="button">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      Lancer le tournoi
+    </button>
+  </div>
+
+  <div class="step" id="step-tournament">
+    <div class="prog-wrap">
+      <div class="prog-labels"><span id="prog-text">Duel 1/1</span><span id="prog-pct">0%</span></div>
+      <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    </div>
+    <div class="round-hd">
+      <div class="tag" id="round-tag">Phase de groupes</div>
+      <div class="round-title" id="round-title">Ou preferes-tu aller ?</div>
+      <div class="round-sub">Clique sur ta destination preferee</div>
+    </div>
+    <div class="duel-grid" id="duel-grid"></div>
+  </div>
+
+  <div class="step" id="step-results">
+    <div class="round-hd">
+      <div class="tag" style="background:var(--gold-hl);color:var(--gold)">Resultats</div>
+      <div class="round-title" id="res-title">Classement</div>
+      <div class="round-sub">Ton top destinations pour juin 2026</div>
+    </div>
+    <div class="podium" id="podium"></div>
+    <div class="share-box">
+      <div class="share-title">Envoie tes resultats</div>
+      <div class="share-sub">Envoie ce fichier HTML a tes potes pour qu'ils votent aussi, puis comparez vos classements !</div>
+      <div class="share-actions">
+        <button class="btn-sec" id="copy-btn" type="button">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copier le lien
+        </button>
+        <button class="btn-sec" id="restart-btn" type="button">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          Recommencer
+        </button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+<canvas id="confetti"></canvas>
+
+<script>
+var destinations = [
+  {id:'lisbonne',    name:'Lisbonne',         country:'Portugal',  price:'des 80 EUR A/R',  photo:'https://pplx-res.cloudinary.com/image/upload/pplx_search_images/99a9d0cb9e1b49053e30bbaf0ba10238cf73170e.jpg'},
+  {id:'porto',       name:'Porto',            country:'Portugal',  price:'des 27 EUR A/R',  photo:'https://pplx-res.cloudinary.com/image/upload/pplx_search_images/60b864222c40e0475566920b150cf3cdef23cd48.jpg'},
+  {id:'barcelone',   name:'Barcelone',        country:'Espagne',   price:'des 60 EUR A/R',  photo:'https://pplx-res.cloudinary.com/image/upload/pplx_search_images/90902e552d4d5de3143166dde8dfb849e0c68a0b.jpg'},
+  {id:'madrid',      name:'Madrid',           country:'Espagne',   price:'des 60 EUR A/R',  photo:'https://pplx-res.cloudinary.com/image/upload/pplx_search_images/a2c0f8cebcba9a850ba6d3e8e1cf054064ceea2c.jpg'},
+  {id:'malaga',      name:'Malaga',           country:'Espagne',   price:'des 80 EUR A/R',  photo:'https://pplx-res.cloudinary.com/image/upload/pplx_search_images/488b5c117a1d059ee5075541c93a02f85a33b1ec.jpg'},
+  {id:'rome',        name:'Rome',             country:'Italie',    price:'des 30 EUR A/R',  photo:'https://pplx-res.cloudinary.com/image/upload/pplx_search_images/2f1097bc2fbe4a30ce5a1905d5d45b3092a43a15.jpg'},
+  {id:'venise',      name:'Venise',           country:'Italie',    price:'des 39 EUR A/R',  photo:'https://pplx-res.cloudinary.com/image/upload/pplx_search_images/66647c528c7455e4a4acfbe776b9beb8312c3047.jpg'},
+  {id:'naples',      name:'Naples',           country:'Italie',    price:'des 60 EUR A/R',  photo:'https://pplx-res.cloudinary.com/image/upload/pplx_search_images/a2ec27518f83328dba37ffc5b97b4ab7135a0f3a.jpg'},
+  {id:'athenes',     name:'Athenes',          country:'Grece',     price:'des 159 EUR A/R', photo:'https://pplx-res.cloudinary.com/image/upload/pplx_search_images/57fcdf4c325dd81b7a6ce31619f290553686ea6e.jpg'},
+  {id:'thessal',     name:'Thessalonique',    country:'Grece',     price:'des 149 EUR A/R', photo:'https://pplx-res.cloudinary.com/image/upload/pplx_search_images/57fcdf4c325dd81b7a6ce31619f290553686ea6e.jpg'},
+  {id:'heraklion',   name:'Heraklion (Crete)',country:'Grece',     price:'des 180 EUR A/R', photo:'https://pplx-res.cloudinary.com/image/upload/pplx_search_images/57fcdf4c325dd81b7a6ce31619f290553686ea6e.jpg'},
+  {id:'budapest',    name:'Budapest',         country:'Hongrie',   price:'des 80 EUR A/R',  photo:'https://pplx-res.cloudinary.com/image/upload/pplx_search_images/55b76224abf901a83fa13f7ab496354a9c9a0288.jpg'},
+  {id:'prague',      name:'Prague',           country:'Tcheque',   price:'des 60 EUR A/R',  photo:'https://pplx-res.cloudinary.com/image/upload/pplx_search_images/22e08f41bf517897e351b49b5d9233d842c508ff.jpg'},
+  {id:'cracovie',    name:'Cracovie',         country:'Pologne',   price:'des 60 EUR A/R',  photo:'https://pplx-res.cloudinary.com/image/upload/pplx_search_images/22e08f41bf517897e351b49b5d9233d842c508ff.jpg'},
+  {id:'belgrade',    name:'Belgrade',         country:'Serbie',    price:'des 80 EUR A/R',  photo:'https://pplx-res.cloudinary.com/image/upload/pplx_search_images/a8047e4d58643951ceb2f572fa8358e8be6fcc93.jpg'},
+  {id:'dubrovnik',   name:'Dubrovnik',        country:'Croatie',   price:'des 100 EUR A/R', photo:'https://pplx-res.cloudinary.com/image/upload/pplx_search_images/6a2667bceef694d3227d0da06ce2c4adc4a4af41.jpg'},
+  {id:'marrakech',   name:'Marrakech',        country:'Maroc',     price:'des 56 EUR A/R',  photo:'https://pplx-res.cloudinary.com/image/upload/pplx_search_images/44386fd77bd9ddb615b1fe3b0f7ba6612785ea9d.jpg'},
+  {id:'djerba',      name:'Djerba',           country:'Tunisie',   price:'des 38 EUR A/R',  photo:'https://pplx-res.cloudinary.com/image/upload/pplx_search_images/007772871ac6023caac999e913262f8786407b07.jpg'},
+  {id:'istanbul',    name:'Istanbul',         country:'Turquie',   price:'des 150 EUR A/R', photo:'https://pplx-res.cloudinary.com/image/upload/pplx_search_images/a14a0d852a7a14fc49516ec24de118e15a589558.jpg'},
+  {id:'copenhague',  name:'Copenhague',       country:'Danemark',  price:'des 100 EUR A/R', photo:'https://pplx-res.cloudinary.com/image/upload/pplx_search_images/55854124cd14e798afa9841fc63ec8fd41065539.jpg'},
+  {id:'amsterdam',   name:'Amsterdam',        country:'Pays-Bas',  price:'des 60 EUR A/R',  photo:'https://pplx-res.cloudinary.com/image/upload/pplx_search_images/ad5d6f7824bad447da35ddd18fd6aef5cc9c3474.jpg'},
+  {id:'dublin',      name:'Dublin',           country:'Irlande',   price:'des 60 EUR A/R',  photo:'https://pplx-res.cloudinary.com/image/upload/pplx_search_images/bc6974f931def3cb6697f1558bcc9172a85ff1ee.jpg'},
+  {id:'sofia',       name:'Sofia',            country:'Bulgarie',  price:'des 43 EUR A/R',  photo:'https://pplx-res.cloudinary.com/image/upload/pplx_search_images/c466b55d723da90177e244a7ca94f291da56f8a6.jpg'},
+  {id:'malte',       name:'Malte',            country:'Malte',     price:'des 80 EUR A/R',  photo:'https://pplx-res.cloudinary.com/image/upload/pplx_search_images/007772871ac6023caac999e913262f8786407b07.jpg'}
+];
+
+var userName = '';
+var duels = [];
+var currentDuel = 0;
+var scores = {};
+var choosing = false;
+
+function showStep(id) {
+  var all = document.querySelectorAll('.step');
+  for (var i = 0; i < all.length; i++) { all[i].classList.remove('active'); }
+  document.getElementById(id).classList.add('active');
+}
+
+function shuffle(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+function generateDuels() {
+  var pairs = [];
+  var n = destinations.length;
+  for (var i = 0; i < n; i++) {
+    for (var j = i + 1; j < n; j++) { pairs.push([destinations[i], destinations[j]]); }
+  }
+  return shuffle(pairs).slice(0, 40);
+}
+
+function startTournament() {
+  var input = document.getElementById('name-input');
+  userName = input.value.trim() || 'Anonyme';
+  duels = generateDuels();
+  currentDuel = 0;
+  scores = {};
+  for (var i = 0; i < destinations.length; i++) { scores[destinations[i].id] = 0; }
+  showStep('step-tournament');
+  renderDuel();
+}
+
+function renderDuel() {
+  if (currentDuel >= duels.length) { showResults(); return; }
+  var a = duels[currentDuel][0];
+  var b = duels[currentDuel][1];
+  var total = duels.length;
+  var pct = Math.round((currentDuel / total) * 100);
+  document.getElementById('prog-text').textContent = 'Duel ' + (currentDuel + 1) + ' / ' + total;
+  document.getElementById('prog-pct').textContent = pct + '%';
+  document.getElementById('prog-fill').style.width = pct + '%';
+  var thirds = Math.floor(total / 3);
+  var label = 'Phase de groupes';
+  if (currentDuel >= thirds * 2) label = 'Phase finale !';
+  else if (currentDuel >= thirds) label = 'Demi-finales';
+  document.getElementById('round-tag').textContent = label;
+  document.getElementById('round-title').textContent = 'Ou preferes-tu aller, ' + userName + ' ?';
+  choosing = false;
+  var grid = document.getElementById('duel-grid');
+  grid.innerHTML = cardHTML(a, 0) + cardHTML(b, 1);
+  var cards = grid.querySelectorAll('.dest-card');
+  cards[0].addEventListener('click', function() { choose(0); });
+  cards[1].addEventListener('click', function() { choose(1); });
+}
+
+function cardHTML(dest, idx) {
+  return '<div class="dest-card" data-idx="' + idx + '">' +
+    '<div class="checkmark"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>' +
+    '<div class="chosen-overlay"></div>' +
+    '<img class="dest-photo" src="' + dest.photo + '" alt="' + dest.name + '" width="400" height="160" loading="lazy">' +
+    '<div class="dest-body">' +
+      '<div class="dest-name">' + dest.name + '</div>' +
+      '<div class="dest-country">' + dest.country + '</div>' +
+      '<div class="dest-price">' + dest.price + '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function choose(idx) {
+  if (choosing) return;
+  choosing = true;
+  var winner = duels[currentDuel][idx];
+  scores[winner.id]++;
+  var cards = document.querySelectorAll('.dest-card');
+  cards[idx].classList.add('chosen');
+  cards[1 - idx].classList.add('rejected');
+  setTimeout(function() { currentDuel++; renderDuel(); }, 450);
+}
+
+function showResults() {
+  showStep('step-results');
+  document.getElementById('res-title').textContent = 'Classement de ' + userName;
+  var entries = [];
+  for (var id in scores) { entries.push([id, scores[id]]); }
+  entries.sort(function(a, b) { return b[1] - a[1]; });
+  var top = entries.slice(0, 10);
+  var html = '';
+  for (var i = 0; i < top.length; i++) {
+    var dest = null;
+    for (var k = 0; k < destinations.length; k++) { if (destinations[k].id === top[i][0]) { dest = destinations[k]; break; } }
+    if (!dest) continue;
+    var rank = i + 1;
+    var rClass = rank === 1 ? 'r1' : rank === 2 ? 'r2' : rank === 3 ? 'r3' : '';
+    var rankTxt = rank === 1 ? '1er' : rank + 'e';
+    var wins = top[i][1];
+    html += '<div class="podium-item" style="animation:fadeUp .3s ' + (i * 0.05) + 's both">' +
+      '<div class="podium-rank ' + rClass + '">' + rankTxt + '</div>' +
+      '<img class="podium-thumb" src="' + dest.photo + '" alt="' + dest.name + '" width="72" height="72" loading="lazy">' +
+      '<div class="podium-info"><div class="podium-name">' + dest.name + '</div><div class="podium-country">' + dest.country + '</div></div>' +
+      '<div class="podium-score">' + wins + ' victoire' + (wins > 1 ? 's' : '') + '</div>' +
+    '</div>';
+  }
+  document.getElementById('podium').innerHTML = html;
+  fireConfetti();
+}
+
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
+
+var root = document.documentElement;
+var darkMode = window.matchMedia('(prefers-color-scheme:dark)').matches;
+root.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+document.getElementById('theme-btn').addEventListener('click', function() {
+  darkMode = !darkMode;
+  root.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+});
+document.getElementById('start-btn').addEventListener('click', startTournament);
+document.getElementById('name-input').addEventListener('keydown', function(e) { if (e.key === 'Enter') startTournament(); });
+document.getElementById('copy-btn').addEventListener('click', function() {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(window.location.href).then(function() { showToast('Lien copie ! Envoie-le a tes potes'); });
+  } else { showToast('Copie le lien dans la barre adresse'); }
+});
+document.getElementById('restart-btn').addEventListener('click', function() {
+  document.getElementById('name-input').value = '';
+  showStep('step-name');
+});
+
+function fireConfetti() {
+  var canvas = document.getElementById('confetti');
+  var ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+  var colors = ['#01696f','#d19900','#437a22','#a12c7b','#006494','#da7101'];
+  var particles = [];
+  for (var i = 0; i < 100; i++) {
+    particles.push({x:Math.random()*canvas.width,y:-10-Math.random()*80,r:4+Math.random()*5,color:colors[Math.floor(Math.random()*colors.length)],vy:3+Math.random()*4,vx:(Math.random()-.5)*3,spin:(Math.random()-.5)*.15,angle:Math.random()*6.28,alpha:1});
+  }
+  var frame = 0;
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    var alive = false;
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      p.y+=p.vy; p.x+=p.vx; p.angle+=p.spin;
+      if (p.y > canvas.height*.65) p.alpha -= .02;
+      if (p.alpha > 0) { alive = true; ctx.save(); ctx.globalAlpha=p.alpha; ctx.translate(p.x,p.y); ctx.rotate(p.angle); ctx.fillStyle=p.color; ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*2); ctx.restore(); }
+    }
+    frame++;
+    if (frame < 180 && alive) requestAnimationFrame(draw);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+  draw();
+}
+</script>
+</body>
+</html>
